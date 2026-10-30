@@ -1,0 +1,263 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Calculadora API",
+    "description": "API REST para operaciones aritmeticas basicas.",
+    "contact": {
+      "name": "Equipo Calculadora"
+    },
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Calculadora",
+      "description": "Operaciones aritmeticas con numeros decimales"
+    },
+    {
+      "name": "Salud",
+      "description": "Estado de disponibilidad de la API"
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "tags": [
+          "Salud"
+        ],
+        "summary": "Comprobar salud",
+        "description": "Indica si la API esta disponible.",
+        "operationId": "health",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/calculadora/sumar": {
+      "get": {
+        "tags": [
+          "Calculadora"
+        ],
+        "summary": "Sumar",
+        "description": "Suma dos numeros decimales.",
+        "operationId": "sumar",
+        "parameters": [
+          {
+            "name": "numero1",
+            "in": "query",
+            "description": "Primer sumando",
+            "required": true,
+            "schema": {
+              "type": "number"
+            },
+            "example": 2.5
+          },
+          {
+            "name": "numero2",
+            "in": "query",
+            "description": "Segundo sumando",
+            "required": true,
+            "schema": {
+              "type": "number"
+            },
+            "example": 3.25
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Falta un parametro o alguno no es un numero decimal valido",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/calculadora/restar": {
+      "get": {
+        "tags": [
+          "Calculadora"
+        ],
+        "summary": "Restar",
+        "description": "Resta el segundo numero al primero.",
+        "operationId": "restar",
+        "parameters": [
+          {
+            "name": "numero1",
+            "in": "query",
+            "description": "Minuendo",
+            "required": true,
+            "schema": {
+              "type": "number"
+            },
+            "example": 10
+          },
+          {
+            "name": "numero2",
+            "in": "query",
+            "description": "Sustraendo",
+            "required": true,
+            "schema": {
+              "type": "number"
+            },
+            "example": 4
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Falta un parametro o alguno no es un numero decimal valido",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/calculadora/multiplicar": {
+      "get": {
+        "tags": [
+          "Calculadora"
+        ],
+        "summary": "Multiplicar",
+        "description": "Multiplica dos numeros decimales.",
+        "operationId": "multiplicar",
+        "parameters": [
+          {
+            "name": "numero1",
+            "in": "query",
+            "description": "Primer factor",
+            "required": true,
+            "schema": {
+              "type": "number"
+            },
+            "example": 3
+          },
+          {
+            "name": "numero2",
+            "in": "query",
+            "description": "Segundo factor",
+            "required": true,
+            "schema": {
+              "type": "number"
+            },
+            "example": 4
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Falta un parametro o alguno no es un numero decimal valido",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/calculadora/dividir": {
+      "get": {
+        "tags": [
+          "Calculadora"
+        ],
+        "summary": "Dividir",
+        "description": "Divide el primer numero entre el segundo con precision DECIMAL128.",
+        "operationId": "dividir",
+        "parameters": [
+          {
+            "name": "numero1",
+            "in": "query",
+            "description": "Dividendo",
+            "required": true,
+            "schema": {
+              "type": "number"
+            },
+            "example": 10
+          },
+          {
+            "name": "numero2",
+            "in": "query",
+            "description": "Divisor (no puede ser cero)",
+            "required": true,
+            "schema": {
+              "type": "number"
+            },
+            "example": 4
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "El divisor es cero, falta un parametro o alguno no es un numero decimal valido",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ProblemDetail": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "format": "uri"
+          },
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "detail": {
+            "type": "string"
+          },
+          "instance": {
+            "type": "string",
+            "format": "uri"
+          },
+          "properties": {
+            "type": "object",
+            "additionalProperties": {
+
+            }
+          }
+        }
+      }
+    }
+  }
+}

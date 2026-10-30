@@ -1,0 +1,31 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: calculadora-request-logs-cleanup
+spec:
+  schedule: "5 0 * * *"
+  timeZone: Etc/UTC
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: cleanup
+              image: your-registry/calculadora-job:latest
+              imagePullPolicy: IfNotPresent
+              env:
+                - name: REQUEST_LOG_FILE
+                  value: /app/logs/api-requests.txt
+              volumeMounts:
+                - name: request-logs
+                  mountPath: /app/logs
+                  readOnly: false
+          volumes:
+            - name: request-logs
+              persistentVolumeClaim:
+                claimName: calculadora-logs
